@@ -3,22 +3,22 @@ pipeline {
 
     stages {
 
-        stage('Clone') {
+        stage('Setup Python Environment') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/MohsinDevOps552/flask-cicd-project.git'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest'
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
             }
         }
 
